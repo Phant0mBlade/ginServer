@@ -5,21 +5,36 @@ Code structure is still in development so things may change
 
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+
+	addRoutes "ginServer/router"
+	systemConst "ginServer/utils/constant"
+)
 
 func ginRouter() *gin.Engine {
 	return gin.Default()
 }
 
-// example server in gin
+// add routes to their specific groups
+func addRouterGroups(router *gin.Engine) {
+	addRoutes.Addv1Routes(router.Group("/v1"))
+	addRoutes.AddHealthCheck(router.Group("/health"))
+}
+
+// func addLogging() {
+// }
+
+// add middlewares
+// func addMiddlewares(router *gin.Engine) {
+// 	// TODO:
+// }
+
+// create router and run server in gin
 func server() {
-	r := ginRouter()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run() // listen and serve on 0.0.0.0:8080
+	router := ginRouter()
+	addRouterGroups(router)
+	router.Run("0.0.0.0" + systemConst.ServerPort) // listen and serve on 0.0.0.0:8080
 }
 
 func main() {

@@ -2,6 +2,7 @@
 ## Gin Server
 
 Boiler plate code for gin server.
+https://go.dev/doc/tutorial/web-service-gin
 
 ### Code organisation
 
@@ -26,3 +27,44 @@ For example, I can structure my schemas in 2 ways,
 And, I believe this is what we will do with every component. Say, we have an album and user controller, their paths will be something like, `controller/album/abc.go` and `controller/user/abc.go`
 
 Though, this should not be necessary for tools like routers.
+
+### Auth middleware
+
+https://gin-gonic.com/docs/examples/using-basicauth-middleware/
+
+### DI
+
+https://golangforall.com/en/post/dependency-injection.html
+https://github.com/uber-go/fx
+https://github.com/uber-go/dig
+
+### Logger abstraction
+
+NOTE: Logs increase response time
+
+1. Install zap and zerolog
+2. create a file where you define these loggers, say as a variable
+3. 
+
+
+### Multi Modules
+https://go.dev/doc/tutorial/workspaces
+
+https://gowebexamples.com/
+https://gowebexamples.com/basic-middleware/
+https://gowebexamples.com/advanced-middleware/
+https://gobyexample.com/closures
+
+
+### Sync Once
+
+`sync.Once` awesome
+
+https://victoriametrics.com/blog/go-sync-once/ - Show race condition
+https://www.slingacademy.com/article/the-power-of-sync-once-for-one-time-initialization-in-go/ - Says race condition not possible
+
+### Zero Allocation
+
+what is zero allocation and no reflection JSON
+https://medium.com/@muroon/the-reason-why-zap-and-zerolog-make-it-zero-allocation-3ee8f69f660
+https://medium.com/@ksandeeptech07/zero-allocation-in-go-ce29e6a9ffdc

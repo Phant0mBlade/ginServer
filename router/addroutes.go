@@ -2,18 +2,29 @@ package addroutes
 
 import (
 	albumcontroller "ginServer/controller/album"
+	log "ginServer/init/log"
 	constants "ginServer/utils/constant"
 
 	"github.com/gin-gonic/gin"
 )
 
-const (
-	v1 = constants.APIVersionV1
-)
+var logger = log.GetCustomLogger()
 
 // AddRoutes Routes request to its request controller
-func AddRoutes(router *gin.RouterGroup) {
-	router.GET(v1+constants.GetAlbumsURI, albumcontroller.GetAlbums)
-	router.GET(v1+constants.GetAlbumsIDURI, albumcontroller.GetAlbumByID)
-	router.POST(v1+constants.PostAlbumsURI, albumcontroller.PostAlbums)
+func Addv1Routes(router *gin.RouterGroup) {
+	// One do not necessary have to name them v1
+	// they can `AddAlbumRoutes` and similaryly other names
+	router.GET(constants.GetAlbumsURI, albumcontroller.GetAlbums)
+	router.GET(constants.GetAlbumsIDURI, albumcontroller.GetAlbumByID)
+	router.POST(constants.PostAlbumsURI, albumcontroller.PostAlbums)
+}
+
+// Health Check router
+func AddHealthCheck(router *gin.RouterGroup) {
+	router.GET("/ping", func(c *gin.Context) {
+		logger.Info().Msg("This is an info log")
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 }
