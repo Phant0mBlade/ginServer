@@ -19,7 +19,7 @@ var logger zerolog.Logger
 
 // return a once initialised logger
 func GetCustomLogger() zerolog.Logger {
-	env := systemUtils.GetEnv("ENVIRONMENT", "DEV")
+	env := systemUtils.GetEnv("ENVIRONMENT", "DEV1")
 	once.Do(func() {
 		createCustomLogger(env)
 	})
