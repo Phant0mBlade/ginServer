@@ -15,7 +15,7 @@ import (
 var once sync.Once
 
 // we import this logger in every package/file of our project
-var logger zerolog.Logger
+var zeroLogger zerolog.Logger
 
 // return a once initialised logger
 func GetCustomLogger() zerolog.Logger {
@@ -23,7 +23,7 @@ func GetCustomLogger() zerolog.Logger {
 	once.Do(func() {
 		createCustomLogger(env)
 	})
-	return logger
+	return zeroLogger
 }
 
 // Defines a new custom logger over the global logger variable
@@ -31,7 +31,7 @@ func createCustomLogger(env string) {
 	fmt.Println("createCustomLogger running...")
 
 	if env == "DEV" {
-		logger = zerolog.
+		zeroLogger = zerolog.
 			New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339}).
 			Level(zerolog.DebugLevel).
 			With().
@@ -40,7 +40,7 @@ func createCustomLogger(env string) {
 			Str("App Version", systemUtils.GetEnv("App_Version", "dev_alpha")).
 			Logger()
 	} else { // for production
-		logger = zerolog.
+		zeroLogger = zerolog.
 			New(os.Stdout).
 			Level(zerolog.ErrorLevel).
 			With().
