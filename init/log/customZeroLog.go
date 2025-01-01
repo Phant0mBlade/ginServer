@@ -15,21 +15,22 @@ import (
 var once sync.Once
 
 // we import this logger in every package/file of our project
-var zeroLogger zerolog.Logger
+// var zeroLogger zerolog.Logger
 
 // return a once initialised logger
-func GetCustomLogger() zerolog.Logger {
+func GetCustomZeroLogger() ZeroLogger {
 	env := systemUtils.GetEnv("ENVIRONMENT", "DEV1")
+	var zeroLogger ZeroLogger
 	once.Do(func() {
-		createCustomLogger(env)
+		zeroLogger = createZeroLogger(env)
 	})
 	return zeroLogger
 }
 
 // Defines a new custom logger over the global logger variable
-func createCustomLogger(env string) {
+func createZeroLogger(env string) ZeroLogger {
 	fmt.Println("createCustomLogger running...")
-
+	var zeroLogger zerolog.Logger
 	if env == "DEV" {
 		zeroLogger = zerolog.
 			New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339}).
@@ -49,4 +50,21 @@ func createCustomLogger(env string) {
 			Logger()
 	}
 	fmt.Println("createCustomLogger done.")
+	return ZeroLogger{log: zeroLogger}
+}
+
+type ZeroLogger struct {
+	log zerolog.Logger
+}
+
+func (l *ZeroLogger) Debug(msg string, keyVal ...interface{}) {
+	l.log.Debug().Fields(keyVal).Msg(msg)
+}
+
+func (l *ZeroLogger) Info(msg string, keyVal ...interface{}) {
+	l.log.Info().Fields(keyVal).Msg(msg)
+}
+
+func (l *ZeroLogger) Error(msg string, keyVal ...interface{}) {
+	l.log.Error().Fields(keyVal).Msg(msg)
 }

@@ -5,14 +5,13 @@ import (
 	log "ginServer/init/log"
 	constants "ginServer/utils/constant"
 
-	"log/slog"
-
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
-var logger = log.GetCustomLogger()
-var zapLogger = log.GetCustomZapLogger()
+// Get either the the zerolog or zap logger
+//
+// log.GetCustomZapLogger() or log.GetCustomZeroLogger()
+var logger = log.GetCustomZeroLogger()
 
 // AddRoutes Routes request to its request controller
 func Addv1Routes(router *gin.RouterGroup) {
@@ -26,10 +25,8 @@ func Addv1Routes(router *gin.RouterGroup) {
 // Health Check router
 func AddHealthCheck(router *gin.RouterGroup) {
 	router.GET("/ping", func(c *gin.Context) {
-		logger.Error().Int("x", 2).Msg("This is an Error log")
-		zapLogger.Info("ABCD")
-		zapLogger.Error("This is an error log", zap.Any("x", 2))
-		slog.Info("This is slog info log")
+		logger.Error("This is a error log")
+		logger.Info("ABCD")
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})

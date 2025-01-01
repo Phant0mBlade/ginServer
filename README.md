@@ -46,6 +46,7 @@ NOTE: Logs increase response time
 2. create a file where you define these loggers, say as a variable
 3. 
 
+Look at slog
 
 ### Multi Modules
 https://go.dev/doc/tutorial/workspaces
@@ -61,6 +62,7 @@ https://gobyexample.com/closures
 `sync.Once` awesome
 
 https://victoriametrics.com/blog/go-sync-once/ - Show race condition
+
 https://www.slingacademy.com/article/the-power-of-sync-once-for-one-time-initialization-in-go/ - Says race condition not possible
 
 ### Zero Allocation
@@ -68,3 +70,7 @@ https://www.slingacademy.com/article/the-power-of-sync-once-for-one-time-initial
 what is zero allocation and no reflection JSON
 https://medium.com/@muroon/the-reason-why-zap-and-zerolog-make-it-zero-allocation-3ee8f69f660
 https://medium.com/@ksandeeptech07/zero-allocation-in-go-ce29e6a9ffdc
+
+why use .com or .org in go package name
+
+### Reflect Package
