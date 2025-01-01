@@ -43,7 +43,7 @@ func createZeroLogger(env string) ZeroLogger {
 	} else { // for production
 		zeroLogger = zerolog.
 			New(os.Stdout).
-			Level(zerolog.ErrorLevel).
+			Level(zerolog.InfoLevel).
 			With().
 			Timestamp().
 			Str("App Version", systemUtils.GetEnv("App_Version", "production 0.1")).
@@ -57,14 +57,14 @@ type ZeroLogger struct {
 	log zerolog.Logger
 }
 
-func (l *ZeroLogger) Debug(msg string, keyVal ...interface{}) {
-	l.log.Debug().Fields(keyVal).Msg(msg)
+func (l *ZeroLogger) Debug(msg, key string, val interface{}) {
+	l.log.Debug().Any(key, val).Msg(msg)
 }
 
-func (l *ZeroLogger) Info(msg string, keyVal ...interface{}) {
-	l.log.Info().Fields(keyVal).Msg(msg)
+func (l *ZeroLogger) Info(msg, key string, val interface{}) {
+	l.log.Info().Any(key, val).Msg(msg)
 }
 
-func (l *ZeroLogger) Error(msg string, keyVal ...interface{}) {
-	l.log.Error().Fields(keyVal).Msg(msg)
+func (l *ZeroLogger) Error(msg, key string, val interface{}) {
+	l.log.Error().Any(key, val).Msg(msg)
 }

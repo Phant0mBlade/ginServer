@@ -11,7 +11,7 @@ import (
 // Get either the the zerolog or zap logger
 //
 // log.GetCustomZapLogger() or log.GetCustomZeroLogger()
-var logger = log.GetCustomZeroLogger()
+var logger = log.GetCustomZapLogger()
 
 // AddRoutes Routes request to its request controller
 func Addv1Routes(router *gin.RouterGroup) {
@@ -24,9 +24,12 @@ func Addv1Routes(router *gin.RouterGroup) {
 
 // Health Check router
 func AddHealthCheck(router *gin.RouterGroup) {
+	// var x []interface{}
+	var m = make(map[string]interface{})
+	m["test"] = 22
 	router.GET("/ping", func(c *gin.Context) {
-		logger.Error("This is a error log")
-		logger.Info("ABCD")
+		logger.Error("This is a error log", "myKey", m)
+		logger.Info("ABCD", "myKey", m)
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})

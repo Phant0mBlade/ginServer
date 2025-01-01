@@ -52,14 +52,14 @@ type ZapLogger struct {
 	log *zap.Logger
 }
 
-func (l *ZapLogger) Debug(msg string, keyVal ...interface{}) {
-	l.log.Debug(msg)
+func (l *ZapLogger) Debug(msg, key string, val interface{}) {
+	l.log.Debug(msg, zap.Any(key, val))
 }
 
-func (l *ZapLogger) Info(msg string, keyVal ...interface{}) {
-	l.log.Info(msg)
+func (l *ZapLogger) Info(msg, key string, val interface{}) {
+	l.log.Info(msg, zap.Any(key, val))
 }
 
-func (l *ZapLogger) Error(msg string, keyVal ...interface{}) {
-	l.log.Error(msg)
+func (l *ZapLogger) Error(msg, key string, val interface{}) {
+	l.log.Error(msg, zap.Any(key, val))
 }
