@@ -14,22 +14,24 @@ import (
 
 var once sync.Once
 
-// we import this logger in every package/file of our project
-var zeroLogger zerolog.Logger
+// to ensure that whenever a new logger is required
+// the same one is returned
+var zeroLogger ZeroLoggerStruct
 
 // return a once initialised logger
-func GetCustomLogger() zerolog.Logger {
+func GetCustomZeroLogger() ZeroLoggerStruct {
 	env := systemUtils.GetEnv("ENVIRONMENT", "DEV1")
+	// var zeroLogger ZeroLoggerStruct
 	once.Do(func() {
-		createCustomLogger(env)
+		zeroLogger = createZeroLogger(env)
 	})
 	return zeroLogger
 }
 
-// Defines a new custom logger over the global logger variable
-func createCustomLogger(env string) {
+// Defines a new custom logger
+func createZeroLogger(env string) ZeroLoggerStruct {
 	fmt.Println("createCustomLogger running...")
-
+	var zeroLogger zerolog.Logger
 	if env == "DEV" {
 		zeroLogger = zerolog.
 			New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339}).
@@ -42,11 +44,28 @@ func createCustomLogger(env string) {
 	} else { // for production
 		zeroLogger = zerolog.
 			New(os.Stdout).
-			Level(zerolog.ErrorLevel).
+			Level(zerolog.InfoLevel).
 			With().
 			Timestamp().
 			Str("App Version", systemUtils.GetEnv("App_Version", "production 0.1")).
 			Logger()
 	}
 	fmt.Println("createCustomLogger done.")
+	return ZeroLoggerStruct{log: zeroLogger}
+}
+
+type ZeroLoggerStruct struct {
+	log zerolog.Logger
+}
+
+func (l *ZeroLoggerStruct) Debug(msg, key string, val interface{}) {
+	l.log.Debug().Any(key, val).Msg(msg)
+}
+
+func (l *ZeroLoggerStruct) Info(msg, key string, val interface{}) {
+	l.log.Info().Any(key, val).Msg(msg)
+}
+
+func (l *ZeroLoggerStruct) Error(msg, key string, val interface{}) {
+	l.log.Error().Any(key, val).Msg(msg)
 }
