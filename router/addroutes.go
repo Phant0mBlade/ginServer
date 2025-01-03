@@ -13,6 +13,8 @@ import (
 // log.GetCustomZapLogger() or log.GetCustomZeroLogger()
 var logger = log.GetCustomZapLogger()
 
+// var logger2 = log.GetCustomZapLogger()
+
 // AddRoutes Routes request to its request controller
 func Addv1Routes(router *gin.RouterGroup) {
 	// One do not necessary have to name them v1
@@ -30,6 +32,9 @@ func AddHealthCheck(router *gin.RouterGroup) {
 	router.GET("/ping", func(c *gin.Context) {
 		logger.Error("This is a error log", "myKey", m)
 		logger.Info("ABCD", "myKey", m)
+		// Uncomment to check if the logger and logger2 deeply equal and have the same address
+		// fmt.Println(reflect.DeepEqual(logger, logger2))
+		// fmt.Println(&logger, &logger2)
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
