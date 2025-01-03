@@ -34,7 +34,6 @@ https://gin-gonic.com/docs/examples/using-basicauth-middleware/
 
 ### DI
 
-https://golangforall.com/en/post/dependency-injection.html
 https://github.com/uber-go/fx
 https://github.com/uber-go/dig
 
@@ -44,33 +43,22 @@ NOTE: Logs increase response time
 
 1. Install zap and zerolog
 2. create a file where you define these loggers, say as a variable
-3. 
 
 Look at slog
+
+### zerolog slog.handler
+
+Try to implement a slog handler for zerolog
+
+Some already discusssed bits: https://github.com/rs/zerolog/issues/571
+
 
 ### Multi Modules
 https://go.dev/doc/tutorial/workspaces
 
-https://gowebexamples.com/
-https://gowebexamples.com/basic-middleware/
-https://gowebexamples.com/advanced-middleware/
-https://gobyexample.com/closures
-
 
 ### Sync Once
 
-`sync.Once` awesome
+`sync.Once` is great
 
 https://victoriametrics.com/blog/go-sync-once/ - Show race condition
-
-https://www.slingacademy.com/article/the-power-of-sync-once-for-one-time-initialization-in-go/ - Says race condition not possible
-
-### Zero Allocation
-
-what is zero allocation and no reflection JSON
-https://medium.com/@muroon/the-reason-why-zap-and-zerolog-make-it-zero-allocation-3ee8f69f660
-https://medium.com/@ksandeeptech07/zero-allocation-in-go-ce29e6a9ffdc
-
-why use .com or .org in go package name
-
-### Reflect Package
