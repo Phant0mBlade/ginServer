@@ -18,8 +18,9 @@ func ginRouter() *gin.Engine {
 
 // add routes to their specific groups
 func addRouterGroups(router *gin.Engine) {
-	addRoutes.Addv1Routes(router.Group("/v1"))
-	addRoutes.AddHealthCheck(router.Group("/health"))
+	addRoutes.Addv1Routes(router.Group(systemConst.APIVersionV1))
+	addRoutes.AddTestRoutes(router.Group(systemConst.TestURI))
+	addRoutes.AddHealthCheck(router.Group(systemConst.HealthURI))
 }
 
 // func addLogging() {

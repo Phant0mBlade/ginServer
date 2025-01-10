@@ -10,12 +10,18 @@ var (
 )
 
 const (
-	//Albums callback URI
+	//Albums fetch URI
 	GetAlbumsURI = "/albums"
-	//Albums by ID callback URI
+	//Albums by ID fetch URI
 	GetAlbumsIDURI = "/albums/:id"
-	//Push Bulk callback URI
+	//Albums Bulk create URI
 	PostAlbumsURI = "/albums"
-	//APIVersionV1 returns API Version v1
+	//Test test apis endpoint group
+	TestURI = "/test"
+	//Loggers test URI
+	GetLoggersURI = "/loggers"
+	//APIVersionV1 returns API Version v1 group
 	APIVersionV1 = "v1/"
+	//HealthCheck returns health check group
+	HealthURI = "/health"
 )
