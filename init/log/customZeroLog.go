@@ -20,8 +20,10 @@ var zeroLogger ZeroLoggerStruct
 
 // return a once initialised logger
 func GetCustomZeroLogger() ZeroLoggerStruct {
-	env := systemUtils.GetEnv("ENVIRONMENT", "DEV1")
+	env := systemUtils.GetEnv("ENVIRONMENT", "DEV")
 	// var zeroLogger ZeroLoggerStruct
+
+	// we call zeroLogger creation exactly once
 	once.Do(func() {
 		zeroLogger = createZeroLogger(env)
 	})
@@ -56,8 +58,44 @@ func createZeroLogger(env string) ZeroLoggerStruct {
 
 type ZeroLoggerStruct struct {
 	log zerolog.Logger
+	// msg    string
+	logger *zerolog.Event
 }
 
+// set level for logging
+func (l *ZeroLoggerStruct) Debug() *ZeroLoggerStruct {
+	// l.msg = msg
+	// l.log.Debug().Msg(msg)
+	l.logger = l.log.Debug()
+	return l
+}
+
+// set level for logging
+func (l *ZeroLoggerStruct) Info() *ZeroLoggerStruct {
+	// l.log.Info().Msg(msg)
+	l.logger = l.log.Info()
+	return l
+}
+
+// set level for logging
+func (l *ZeroLoggerStruct) Error() *ZeroLoggerStruct {
+	// l.log.Error().Msg(msg)
+	l.logger = l.log.Error()
+	return l
+}
+
+// set any extra field for logging
+func (l *ZeroLoggerStruct) Any(key string, val interface{}) *ZeroLoggerStruct {
+	l.logger = l.logger.Any(key, val)
+	return l
+}
+
+// log actual msg with extra field if passed
+func (l *ZeroLoggerStruct) Msg(msg string) {
+	l.logger.Msg(msg)
+}
+
+/*
 func (l *ZeroLoggerStruct) Debug(msg, key string, val interface{}) {
 	l.log.Debug().Any(key, val).Msg(msg)
 }
@@ -69,3 +107,4 @@ func (l *ZeroLoggerStruct) Info(msg, key string, val interface{}) {
 func (l *ZeroLoggerStruct) Error(msg, key string, val interface{}) {
 	l.log.Error().Any(key, val).Msg(msg)
 }
+*/

@@ -9,6 +9,7 @@ import (
 	systemUtils "ginServer/utils/system"
 
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 var zapOnce sync.Once
@@ -50,34 +51,79 @@ func createZapLogger(env string) *ZapLoggerStruct {
 }
 
 type ZapLoggerStruct struct {
-	log *zap.Logger
+	log   *zap.Logger
+	zapF  zapcore.Field
+	level string
 }
 
-func (l *ZapLoggerStruct) Debug(msg, key string, val interface{}) {
+// sets level of loggin
+func (l *ZapLoggerStruct) Debug() *ZapLoggerStruct {
 	// Need to find a better way for key-val log output
+	l.level = "debug"
+	return l
+}
+
+// sets level of loggin
+func (l *ZapLoggerStruct) Info() *ZapLoggerStruct {
+	// Need to find a better way for key-val log output
+	l.level = "info"
+	return l
+}
+
+// sets level of loggin
+func (l *ZapLoggerStruct) Error() *ZapLoggerStruct {
+	// Need to find a better way for key-val log output
+	l.level = "error"
+	return l
+}
+
+// set any extra field for logging
+func (l *ZapLoggerStruct) Any(key string, val interface{}) *ZapLoggerStruct {
+	// l.msg = msg
+	// l.log.Debug().Msg(msg)
+	l.zapF = zap.Any(key, val)
+	return l
+}
+
+// actual logging with msg and the extra fields passed if any
+func (l *ZapLoggerStruct) Msg(msg string) {
+	// TODO: Need to find a better way
+	// zerolog supports chaining itself so it was straight forward and easy
+	// zaplog does not, so if l.zapF is undefined(nill and 0 values for its own field, check zapcore.Field)
+	// we cannot use l.zapF without causing an error
+	if l.zapF.Interface != nil {
+		switch l.level {
+		case "debug":
+			fmt.Println("this is zapf", l.zapF)
+			l.log.Debug(msg, l.zapF)
+		case "info":
+			l.log.Info(msg, l.zapF)
+		case "error":
+			l.log.Error(msg, l.zapF)
+		}
+	} else {
+		switch l.level {
+		case "debug":
+			l.log.Debug(msg)
+		case "info":
+			l.log.Info(msg)
+		case "error":
+			l.log.Error(msg)
+		}
+	}
+	l.zapF = zapcore.Field{}
+}
+
+/*
+func (l *ZapLoggerStruct) Debug(msg, key string, val interface{}) {
 	l.log.Debug(msg, zap.Any(key, val))
 }
 
 func (l *ZapLoggerStruct) Info(msg, key string, val interface{}) {
-	// Need to find a better way for key-val log output
 	l.log.Info(msg, zap.Any(key, val))
 }
 
 func (l *ZapLoggerStruct) Error(msg, key string, val interface{}) {
-	// Need to find a better way for key-val log output
 	l.log.Error(msg, zap.Any(key, val))
-}
-
-/*
-func (l *ZapLoggerStruct) Debug(msg string, keyVal ...interface{}) {
-	l.log.Debug(msg)
-}
-
-func (l *ZapLoggerStruct) Info(msg string, keyVal ...interface{}) {
-	l.log.Info(msg)
-}
-
-func (l *ZapLoggerStruct) Error(msg string, keyVal ...interface{}) {
-	l.log.Error(msg)
 }
 */
